@@ -10,4 +10,8 @@ public class BlogContext : DbContext
 
     public DbSet<Post> Posts { get; set; } = default!; // database table
 
+    public DbSet<Author> Authors { get; set; } 
+
+    public DbSet<Category> Categories { get; set; } 
+
 }
