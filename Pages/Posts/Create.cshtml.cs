@@ -19,26 +19,51 @@ namespace BlogSite.Pages_Posts
             _context = context;
         }
 
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
+        
 
         [BindProperty]
         public Post Post { get; set; } = default!;
 
+        public SelectList AuthorOptions { get; set; } = default!;
+
+        public SelectList CategoryOptions { get; set; } = default!;
+
+        private void LoadOptions()
+        {
+            AuthorOptions = new SelectList(_context.Authors, "Id", "Name");
+            CategoryOptions = new SelectList(_context.Categories, nameof(Category.Id), nameof(Category.Name));
+        }
+
+        public IActionResult OnGet()
+        {
+            LoadOptions();
+
+            return Page();
+        }
+
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            LoadOptions();
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Posts.Add(Post);
-            await _context.SaveChangesAsync();
+            var newPost = new Post ();
 
-            return RedirectToPage("./Index");
+            if (await TryUpdateModelAsync<Post>(
+                newPost,
+                "post",   // Prefix for form value.
+                p => p.Title, p => p.Content, p => p.AuthorId, p => p.CategoryId))
+            {
+                _context.Posts.Add(newPost);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+
+            return Page();
         }
     }
 }

@@ -38,7 +38,7 @@ namespace BlogSite.Pages_Categories
             _context.Categories.Add(Category);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Index");
         }
     }
 }

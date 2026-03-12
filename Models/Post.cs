@@ -11,8 +11,9 @@ public class Post
     public string Excerpt => Content.Length > 100 ? Content.Substring(0, 100) + "..." : Content;
 
     public int AuthorId { get; set; }
+    public int CategoryId { get; set; }
 
-    public Author Author { get; set; } 
+    public Author? Author { get; set; }
 
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
 }
