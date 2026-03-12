@@ -17,7 +17,7 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    List<Post> Posts { get; set; }
+    public List<Post> Posts { get; set; }
     public async Task OnGet()
     {
         Posts = await _context.Posts.ToListAsync();
